@@ -1,0 +1,13 @@
+worker_processes 1;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    server {
+        listen 80;
+        server_name ~^(?<subdomain>.+)\.${SOURCE_DOMAIN};
+        return 301 https://$subdomain.${TARGET_DOMAIN}$request_uri;
+    }
+}
