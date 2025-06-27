@@ -5,9 +5,22 @@ events {
 }
 
 http {
+    # Captura o subdomínio antes de "${SOURCE_DOMAIN}"
+    map $host $subdomain {
+        default "";
+        ~^(?<sub>[^.]+)\.${SOURCE_DOMAIN}$ $sub;
+    }
+
     server {
         listen 80;
-        server_name ~^(?<subdomain>.+)\.${SOURCE_DOMAIN};
-        return 301 https://$subdomain.${TARGET_DOMAIN}$request_uri;
+        server_name _;
+
+        location / {
+            if ($subdomain = "") {
+                return 400 "Invalid host";
+            }
+
+            return 301 https://$subdomain.${TARGET_DOMAIN}$request_uri;
+        }
     }
 }
