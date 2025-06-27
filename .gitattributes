@@ -1,0 +1,10 @@
+# Força LF em shell scripts
+*.sh text eol=lf
+
+# Também força LF em arquivos de config usados no Docker
+*.template text eol=lf
+*.conf text eol=lf
+Dockerfile text eol=lf
+
+# Opcional: força LF em todos os arquivos de texto
+* text=auto
